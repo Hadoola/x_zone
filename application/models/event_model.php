@@ -12,12 +12,8 @@ class Event_model extends CI_Model {
 	 * section and map url are optional parameters
 	 * returns the event id on success, false otherwise.
 	 */
-	public function add_event($user_name, $title, $body, $place, $time, $section = NULL, $map_url = NULL)
+	public function add_event($user_id, $title, $body, $place, $time, $section_id = NULL, $map_url = NULL)
 	{
-		$user_id = $this->db->where('user_name', $user_name)->limit('1')->get('user')->row()->id;
-		$section_id = NULL;
-		if($section != NULL)
-			$section_id = $this->db->where('name_en', $section)->limit('1')->get('section')->row()->id;
 		$new_event = array('fk_section_id' => $section_id, 
 		                          'fk_user_id' => $user_id,
 								  'title' => $title,
@@ -33,11 +29,11 @@ class Event_model extends CI_Model {
 	 * Edit an existing event. Event Id must be provided
 	 * returns true on success, false otherwise.
 	 */
-	public function edit_event($event_id, $user_name, $title = NULL, $body = NULL, $place = NULL, $time = NULL, $section = NULL, $map_url = NULL)
+	public function edit_event($event_id, $user_id, $title = NULL, $body = NULL, $place = NULL, $time = NULL, $section_id = NULL, $map_url = NULL)
 	{
 		$new_data = array();
 		if($section != NULL)
-			$new_data['fk_section_id'] = $this->db->where('name_en', $section)->limit('1')->get('section')->row()->id;
+			$new_data['fk_section_id'] = $section_id;
 		if($title != NULL)
 			$new_data['title'] = $title;
 		if($body != NULL)
@@ -50,7 +46,7 @@ class Event_model extends CI_Model {
 			$new_data['event_time'] = $time;
 		if(!count($new_data))
 			return false;
-		$new_data['fk_last_edit_user_id'] = $this->db->where('user_name', $user_name)->limit('1')->get('user')->row()->id;
+		$new_data['fk_last_edit_user_id'] = $user_id;
 		$this->db->where('id', $event_id)->update(self::event_table, $new_data);
 		return $this->db->affected_rows() ? TRUE : FALSE;
 	}

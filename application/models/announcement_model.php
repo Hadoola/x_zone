@@ -11,10 +11,8 @@ class Announcement_model extends CI_Model {
 	 * Add new announcement, return id for success, false otherwise
 	 * assume data is already checked for permissions. section name is the english name!
 	 */
-	public function add_announcement($user_name, $section, $title, $body)
+	public function add_announcement($user_id, $section_id, $title, $body)
 	{
-		$user_id = $this->db->where('user_name', $user_name)->limit('1')->get('user')->row()->id;
-		$section_id = $this->db->where('name_en', $section)->limit('1')->get('section')->row()->id;
 		$new_announcement = array('fk_section_id' => $section_id, 
 		                          'fk_user_id' => $user_id,
 								  'title' => $title,
@@ -27,18 +25,18 @@ class Announcement_model extends CI_Model {
 	 * Edit an existing announcement. Annoucement Id must be provided
 	 * returns true on success, false otherwise.
 	 */
-	public function edit_announcement($announcement_id, $user_name, $section = NULL, $title = NULL, $body = NULL)
+	public function edit_announcement($announcement_id, $user_id, $section_id = NULL, $title = NULL, $body = NULL)
 	{
 		$new_data = array();
 		if($section != NULL)
-			$new_data['fk_section_id'] = $this->db->where('name_en', $section)->limit('1')->get('section')->row()->id;
+			$new_data['fk_section_id'] = $section_id;
 		if($title != NULL)
 			$new_data['title'] = $title;
 		if($body != NULL)
 			$new_data['body'] = $body;
 		if(!count($new_data))
 			return false;
-		$new_data['fk_last_edit_user_id'] = $this->db->where('user_name', $user_name)->limit('1')->get('user')->row()->id;
+		$new_data['fk_last_edit_user_id'] = $user_id;
 		$this->db->where('id', $announcement_id)->update(self::announcement_table, $new_data);
 		return $this->db->affected_rows() ? TRUE : FALSE;
 	}
