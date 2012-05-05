@@ -9,13 +9,13 @@ class Announcement_controller extends CI_Controller {
 	
 	public function add_announcement()
 	{
-		$result = $this->Announcement_model->add_announcement('test', 'section test', 'title text', 'body text');
+		$result = $this->Announcement_model->add_announcement(1, 'section test', 'title text', 'body text');
 		echo $result;
 	}
 	
 	public function edit_announcement()
 	{
-		$result = $this->Announcement_model->edit_announcement(1, NULL, NULL, NULL);
+		$result = $this->Announcement_model->edit_announcement(4, 2, NULL, 'title text');
 		echo $result;
 	}
 	

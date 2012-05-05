@@ -32,7 +32,7 @@ class Event_model extends CI_Model {
 	public function edit_event($event_id, $user_id, $title = NULL, $body = NULL, $place = NULL, $time = NULL, $section_id = NULL, $map_url = NULL)
 	{
 		$new_data = array();
-		if($section != NULL)
+		if($section_id != NULL)
 			$new_data['fk_section_id'] = $section_id;
 		if($title != NULL)
 			$new_data['title'] = $title;
@@ -47,6 +47,7 @@ class Event_model extends CI_Model {
 		if(!count($new_data))
 			return false;
 		$new_data['fk_last_edit_user_id'] = $user_id;
+		$new_data['edit_time'] = date("d/m/y : H:i:s", time());
 		$this->db->where('id', $event_id)->update(self::event_table, $new_data);
 		return $this->db->affected_rows() ? TRUE : FALSE;
 	}
