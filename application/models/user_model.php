@@ -20,9 +20,10 @@ class User_model extends CI_Model {
 			'user_name' => $username,
 			'password' => $password,
 			'email' => $email,
-			'name' => $name
+			'name' => $name,
+			'creation_time' => date("d/m/y : h:i:s", time())
 		);
-		 
+		
 		$this->db->insert(self::user_table, $newUser);
 		return $this->db->affected_rows() ? TRUE : FALSE;
 	}
@@ -52,5 +53,15 @@ class User_model extends CI_Model {
 		$this->db->where('id', $user_id);
 		$this->db->update(self::user_table);
 		return $this->db->affected_rows() ? TRUE : FALSE;
+	}
+	
+	public function authinticate_user($username, $password) {
+		$query = $this->db->get_where(self::user_table, array('user_name' => $username, 'password' => $password));
+		if($this->db->affected_rows()){
+			return $query->row()->id;	
+		}
+		else {
+			return FALSE;
+		}
 	}
 }

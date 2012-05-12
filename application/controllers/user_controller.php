@@ -8,12 +8,13 @@ class User_controller extends CI_Controller {
 	function __construct() {
 		parent::__construct();
 				
-		$this->load->model('User_model', '', TRUE);
+		$this->load->model('File_manager_model', '', TRUE);
 	}
 	
 	public function add_user($value)
 	{
-		$result = $this->User_model->set_active('1', 1);
-		echo $result;
+		$this->File_manager_model->create_directory('./uploads/Test/test2');
+		//$result = $this->User_model->authinticate_user('koko', md5('koko'));
+		//var_dump($result);
 	}
 }
