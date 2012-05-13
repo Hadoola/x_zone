@@ -25,7 +25,7 @@ class User_model extends CI_Model {
 		);
 		
 		$this->db->insert(self::user_table, $newUser);
-		return $this->db->affected_rows() ? TRUE : FALSE;
+		return $this->db->affected_rows() ? $this->db->insert_id() : FALSE;
 	}
 	
 	public function is_username_exist($username) {
