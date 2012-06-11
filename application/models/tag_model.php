@@ -38,12 +38,12 @@ class Tag_model extends CI_Model {
 	}
 	
 	public function remove_tag_by_id($tag_id) {
-		$query = $this->db->delete(self::tag_table, array('id' => $tag_id));
+		$this->db->delete(self::tag_table, array('id' => $tag_id));
 		return $this->db->affected_rows() ? TRUE : FALSE;
 	}
 	
 	public function remove_tag_by_name($name) {
-		$query = $this->db->delete(self::tag_table, array('name' => $name));
+		$this->db->delete(self::tag_table, array('name' => $name));
 		return $this->db->affected_rows() ? TRUE : FALSE;
 	}
 	
