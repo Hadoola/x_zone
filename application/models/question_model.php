@@ -26,18 +26,23 @@ class Question_model extends CI_Model {
 			'creation_time' => date("d/m/y : h:i:s", time())
 		);
 		
-		$question_id = $this->db->insert(self::question_table, $question_data);
+		$this->db->insert(self::question_table, $question_data);
+		$question_id = $this->db->insert_id();
 		
-		// insert question tags
-		foreach ($tags as $tag_id) {
-			$this->db->insert(self::question_tag_table, Array('fk_question_id' => $question_id, 'fk_tag_id' => $tag_id));
-		}
-
-		// insert question files
-		foreach ($files as $file_id) {
-			$this->db->insert(self::question_file_table, Array('fk_question_id' => $question_id, 'fk_file_id' => $file_id));
+		if($tags != NULL){
+			// insert question tags
+			foreach ($tags as $tag_id) {
+				$this->db->insert(self::question_tag_table, Array('fk_question_id' => $question_id, 'fk_tag_id' => $tag_id));
+			}
 		}
 		
+		if($files != NULL){
+			// insert question files
+			foreach ($files as $file_id) {
+				$this->db->insert(self::question_file_table, Array('fk_question_id' => $question_id, 'fk_file_id' => $file_id));
+			}
+		}	
+			
 		$this->db->trans_complete();
 		
 		if ($this->db->trans_status() === FALSE){
